@@ -38,6 +38,11 @@ pnpm add -D roblox-ts@next
 ```
 
 Finally, install `@firere/react-vendor` using an alias:
+```sh
+npm install @rbxts/react-vendor@npm:@firere/react-vendor
+yarn add @rbxts/react-vendor@npm:@firere/react-vendor
+pnpm add @rbxts/react-vendor@npm:@firere/react-vendor
+```
 
 ### Configuration
 
