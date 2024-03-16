@@ -2,7 +2,7 @@
   <p align="center">
     <img width="150" height="150" src="https://github.com/littensy/rbxts-react/blob/main/images/logo.png?raw=true" alt="Logo">
   </p>
-  <h1 align="center"><b>@rbxts/react</b></h1>
+  <h1 align="center"><b>@firere/react</b></h1>
   <p align="center">
     TypeScript type definitions for React Lua.
     <br />
@@ -13,11 +13,9 @@
 TypeScript type definitions for [React Lua](https://github.com/jsdotlua/react-lua) and [roblox-ts](https://roblox-ts.com), sourced from the official React types. Currently, only [`@rbxts/react`](https://npmjs.com/package/@rbxts/react) and
 [`@rbxts/react-roblox`](https://npmjs.com/package/@rbxts/react-roblox) are available.
 
-If we're missing any deviations from [React Lua](https://jsdotlua.github.io/react-lua/), please [open an issue or pull request](https://github.com/littensy/rbxts-react/issues/new) to let us know!
-
 > [!IMPORTANT]
 > This package uses unreleased roblox-ts features, and requires `roblox-ts@next` to be installed.
-> If you're encountering issues with `@rbxts/react`, please see the [Troubleshooting](#-troubleshooting) section for more information.
+> If you're encountering issues with `@firere/react`, please see the [Troubleshooting](#-troubleshooting) section for more information.
 
 ## 📦 Setup
 
@@ -38,6 +36,8 @@ npm install -D roblox-ts@next
 yarn add -D roblox-ts@next
 pnpm add -D roblox-ts@next
 ```
+
+Finally, install `@firere/react-vendor` using an alias:
 
 ### Configuration
 
@@ -233,3 +233,36 @@ If you're encountering an issue that isn't listed here, please [post your issue]
 ## 📝 License
 
 This project is licensed under the [MIT license](LICENSE).
+
+## Why does this exist?
+Back in the days of Legacy Roact, I had [my own version](https://github.com/Firere/roact) which automatically [skipped over applying invalid props](https://firere.github.io/roact/guide/invalid-prop-discarding) and which merged children for you, as [Roact itself suggested](https://firere.github.io/roact/guide/child-merging/#:~:text=The%20prop,fullProps).
+
+This was so I could write my components like:
+```tsx
+interface Props extends React.InstanceProps<TextButton> {
+	someProp: boolean;
+}
+
+function SomeComponent(props: Props) {
+	// pretend there's some logic involving someProp here
+
+	return (
+		<textbutton BackgroundColor3={new Color3()} Text="Button" {...props}>
+			<textlabel Text="Ooh, look, a child!" />
+		</textbutton>
+	);
+}
+
+export default SomeComponent;
+```
+Sweet! Now in `SomeComponent`, I can easily overwrite its default props, and give it more children when using it if need be without the hassle of needing to create a utility function.
+```tsx
+<SomeComponent BackgroundColor3={new Color3(1, 1, 1)} someProp={false} Text="Special button">
+	<textlabel Text="Yes! The more children, the merrier! I love children!" />
+</SomeComponent>
+```
+
+Anyway, why modify Roact and not just do [what everyone else is doing](https://blog.boyned.com/articles/things-i-learned-using-react/#:~:text=Traditionally)? Simple! I didn't have any idea what everyone else was doing. None of my friends are Roblox devs. I didn't even do `local e = Roact.createElement` before I switched to TypeScript.
+
+My version now doesn't allow any configurability, since I don't intend or expect anyone else to use it. I've also not tried to optimise the child merging, and, when in dev mode, `childArray` internally doesn't get frozen, because it doesn't exist.
+The changes can be found in `react-roblox > client > roblox > RobloxComponentProps` and in `react > ReactElement > createElement`. Use it if you want. I'll probably only bother updating this if we ever get Roact v19 or something that helped that much. (God, I'd really love Roact v19. I know there isn't any way for Roact to do it since it's in Luau, but maybe roblox-ts can cook something up?)
