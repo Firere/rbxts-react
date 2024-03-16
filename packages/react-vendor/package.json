@@ -1,6 +1,6 @@
 {
 	"name": "@firere/react-vendor",
-	"version": "0.3.4",
+	"version": "0.3.4.1",
 	"description": "Internal module for @rbxts/react, modified to my liking (React automatically merges children, ReactRoblox automatically skips applying props which don't exist)",
 	"scripts": {
 		"prepublishOnly": "cp ../../README.md . && cp ../../LICENSE.md ."
