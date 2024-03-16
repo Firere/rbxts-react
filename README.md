@@ -267,7 +267,8 @@ Sweet! Now in `SomeComponent`, I can easily overwrite its default props, and giv
 </SomeComponent>
 ```
 
-Anyway, why modify Roact and not just do [what everyone else is doing](https://blog.boyned.com/articles/things-i-learned-using-react/#:~:text=Traditionally)? Simple! I didn't have any idea what everyone else was doing. None of my friends are Roblox devs. I didn't even do `local e = Roact.createElement` before I switched to TypeScript.
+Anyway, why modify Roact and not just do [what everyone else is doing](https://blog.boyned.com/articles/things-i-learned-using-react/#:~:text=Traditionally)? Simple! I didn't have any idea what everyone else was doing. None of my friends are Roblox devs. I didn't even use `local e = Roact.createElement` before I switched to TypeScript.
 
-My version now doesn't allow any configurability, since I don't intend or expect anyone else to use it. I've also not tried to optimise the child merging, and, when in dev mode, `childArray` internally doesn't get frozen, because it doesn't exist.
-The changes can be found in `react-roblox > client > roblox > RobloxComponentProps` and in `react > ReactElement > createElement`. Use it if you want. I'll probably only bother updating this if we ever get Roact v19 or something that helped that much. (God, I'd really love Roact v19. I know there isn't any way for Roact to do it since it's in Luau, but maybe roblox-ts can cook something up?)
+All this particular version is is me carrying some of the code from my old Roact modification. Emphasis on *some*: it no longer supports child merging (as it was working really strangely when I did carry that over - I had to wrap certain children of components in fragments for them to render, for some reason) or configuration (as I don't intend nor expect anyone else to use this, along with the fact the only thing this now does is skip applying invalid props).
+
+The changes (by which I mean 2 additional lines of code) can be found in `react-roblox > client > roblox > RobloxComponentProps`. Use it if you want. I'll probably only bother updating this to any latest version if upstream ever gets an update of around the calibre of v19. (God, I'd really love Roact v19. I know there isn't any way for Roact to do it since it's in Luau and there needs to be a compiler, but maybe roblox-ts can cook something up?)
